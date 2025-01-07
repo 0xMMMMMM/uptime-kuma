@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 
 /**
  * DateTime Mixin
@@ -120,6 +121,45 @@ export default {
         datetimeFormat(value, format) {
             if (value !== undefined && value !== "") {
                 return dayjs.utc(value).tz(this.timezone).format(format);
+            }
+            return "";
+        },
+
+        toUptimeSince(value, from = null) {
+            dayjs.extend(duration);
+
+            if (value !== undefined && value !== "") {
+                let past = dayjs.utc(value).tz(this.timezone);
+                let now = dayjs.utc().tz(this.timezone);
+                if (from !== null) {
+                    now = dayjs.utc(from).tz(this.timezone);
+                }
+                const diff = now.diff(past);
+                const duration = dayjs.duration(diff);
+
+                const days = Math.floor(duration.asDays());
+                const hours = duration.hours();
+                const mintues = duration.minutes();
+                const seconds = duration.seconds();
+
+                const result = [];
+                if (days > 0) {
+                    result.push(`${days}d`);
+                }
+
+                if (hours > 0 && result.length < 2) {
+                    result.push(`${hours}h`);
+                }
+
+                if (mintues > 0 && result.length < 2) {
+                    result.push(`${mintues}m`);
+                }
+
+                if (seconds > 0 && result.length < 2) {
+                    result.push(`${seconds}s`);
+                }
+
+                return result.join(" ");
             }
             return "";
         },

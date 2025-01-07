@@ -80,6 +80,7 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <span class="badge rounded-pill" :class=" 'bg-' + status.color " style="font-size: 30px;" data-testid="monitor-status">{{ status.text }}</span>
+                        <p style="font-weight: bold; margin-top: 0.2rem;">{{ currentTime }}</p>
                     </div>
                 </div>
             </div>
@@ -222,6 +223,7 @@
                         <tr>
                             <th>{{ $t("Status") }}</th>
                             <th>{{ $t("DateTime") }}</th>
+                            <th>{{ $t("Duration") }}</th>
                             <th>{{ $t("Message") }}</th>
                         </tr>
                     </thead>
@@ -229,6 +231,7 @@
                         <tr v-for="(beat, index) in displayedRecords" :key="index" style="padding: 10px;">
                             <td><Status :status="beat.status" /></td>
                             <td :class="{ 'border-0':! beat.msg}"><Datetime :value="beat.time" /></td>
+                            <td>{{ displayTimeSince(beat, displayedRecords[index - 1] ?? null) }}</td>
                             <td class="border-0">{{ beat.msg }}</td>
                         </tr>
 
@@ -328,6 +331,8 @@ export default {
                 currentExample: "javascript-fetch",
                 code: "",
             },
+            currentTime: "",
+            intervalCurrentTime: null,
         };
     },
     computed: {
@@ -431,10 +436,14 @@ export default {
             }
             this.loadPushExample();
         }
+
+        this.startDisplayTimeInterval();
     },
 
     beforeUnmount() {
         this.$root.emitter.off("newImportantHeartbeat", this.onNewImportantHeartbeat);
+
+        clearInterval(this.intervalCurrentTime);
     },
 
     methods: {
@@ -656,6 +665,20 @@ export default {
                     .replace("https://example.com/api/push/key?status=up&msg=OK&ping=", this.pushURL);
                 this.pushMonitor.code = code;
             });
+        },
+
+        startDisplayTimeInterval() {
+            this.intervalCurrentTime = setInterval(() => {
+                if (this.displayedRecords.length > 0) {
+                    this.currentTime = this.$root.toUptimeSince(this.displayedRecords[0]?.time);
+                } else {
+                    this.currentTime = "";
+                }
+            });
+        },
+
+        displayTimeSince(record, from = null) {
+            return this.$root.toUptimeSince(record.time, from?.time);
         }
     },
 };
