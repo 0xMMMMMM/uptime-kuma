@@ -458,6 +458,14 @@ optgroup {
 }
 
 .monitor-list {
+    .monitor-list-grid {
+        @media (min-width: 1280px) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+    }
+
     &.scrollbar {
         overflow-y: auto;
     }

@@ -50,17 +50,19 @@
                 {{ $t("No Monitors, please") }} <router-link to="/add">{{ $t("add one") }}</router-link>
             </div>
 
-            <MonitorListItem
-                v-for="(item, index) in sortedMonitorList"
-                :key="index"
-                :monitor="item"
-                :isSelectMode="selectMode"
-                :isSelected="isSelected"
-                :select="select"
-                :deselect="deselect"
-                :filter-func="filterFunc"
-                :sort-func="sortFunc"
-            />
+            <div class="monitor-list-grid">
+                <MonitorListItem
+                    v-for="(item, index) in sortedMonitorList"
+                    :key="index"
+                    :monitor="item"
+                    :isSelectMode="selectMode"
+                    :isSelected="isSelected"
+                    :select="select"
+                    :deselect="deselect"
+                    :filter-func="filterFunc"
+                    :sort-func="sortFunc"
+                />
+            </div>
         </div>
     </div>
 
