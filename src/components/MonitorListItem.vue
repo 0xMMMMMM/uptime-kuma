@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="monitor-item-wrapper">
         <div :style="depthMargin">
             <!-- Checkbox -->
             <div v-if="isSelectMode" class="select-input-wrapper">
@@ -229,7 +229,7 @@ export default {
 
 .tags {
     margin-top: 4px;
-    padding-left: 67px;
+    // padding-left: 67px;
     display: flex;
     flex-wrap: wrap;
     gap: 0;
@@ -251,6 +251,11 @@ export default {
     padding-left: 4px;
     position: relative;
     z-index: 15;
+}
+
+.monitor-item-wrapper {
+    border: solid 1px rgba(255, 255, 255, .1);
+    border-radius: 10px;
 }
 
 </style>
