@@ -147,15 +147,15 @@ export default {
                     result.push(`${days}d`);
                 }
 
-                if (hours > 0 && result.length < 2) {
+                if (hours > 0 && result.length < 3) {
                     result.push(`${hours}h`);
                 }
 
-                if (mintues > 0 && result.length < 2) {
+                if (mintues > 0 && result.length < 3) {
                     result.push(`${mintues}m`);
                 }
 
-                if (seconds > 0 && result.length < 2) {
+                if (seconds > 0 && result.length < 3) {
                     result.push(`${seconds}s`);
                 }
 
